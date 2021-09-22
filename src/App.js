@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 toast.configure()
 function App() {
   const [firstname, setFirstname] = useState("");
@@ -39,6 +41,7 @@ function App() {
       toast.info("შეიყვანეთ სახელი")
       setFirstNameError(true);
       setLastNameError(false);
+      setGenderError(false);
       setEmailError(false);
       setPasswordError(false);
       setConfirmPasswordError(false);
@@ -51,6 +54,7 @@ function App() {
       toast.info("შეიყვანეთ გვარი")
       setLastNameError(true);
       setFirstNameError(false);
+      setGenderError(false);
       setEmailError(false);
       setPasswordError(false);
       setConfirmPasswordError(false);
@@ -63,6 +67,7 @@ function App() {
       toast.info("შეიყვანეთ ელ.ფოსტა")
       setEmailError(true);
       setConfirmPasswordError(false);
+      setGenderError(false);
       setPasswordError(false);
       setPasswordMatch(false);
       setFirstNameError(false);
@@ -80,17 +85,10 @@ function App() {
       toast.error("არასწორი ფორმატი")
       setEmailInputError(true);
     }
-      else if(!country){
-      toast.info("აირჩიეთ ქვეყანა")
-      setCountryError(true);
-    }
-      else if(!gender){
-        toast.info("მიუთითეთ სქესი")
-        setGenderError(true)
-      }
-     else if (!phonenumber) {
+    else if (!phonenumber) {
       toast.info("შეიყვანეთ ტელეფონის ნომერი")
       setPhoneNumberError(true);
+      setGenderError(false);
       setEmailError(false);
       setConfirmPasswordError(false);
       setPasswordError(false);
@@ -115,13 +113,25 @@ function App() {
       toast.error("ტელეფონის ნომერი შეიყვანეთ სრულად")
       setPhoneNumberError(true);
     }
+      else if(!country){
+      setPhoneNumberError(false)
+      toast.info("აირჩიეთ ქვეყანა")
+      setCountryError(true);
+    }
+      else if(!gender){
+        setPhoneNumberError(false)
+        toast.info("მიუთითეთ სქესი")
+        setGenderError(true)
+      }
     else if(!userDateBirth){
       setPhoneNumberError(false)
+      setGenderError(false);
       toast.info("შეავსეთ დაბადების თარიღის ველი")
       setuserDateBirthError(true)
     }
     else if (!password) {
       setPhoneNumberError(false)
+      setGenderError(false);
       toast.info("შეიყვანეთ პაროლი")
       setPasswordError(true);
       setConfirmPasswordError(false);
@@ -131,6 +141,7 @@ function App() {
       setEmailError(false);
       setCountryError(false);
       setGenderError(false);
+      setuserDateBirthError(false);
       passwordref.current.focus();
     } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(
@@ -143,11 +154,11 @@ function App() {
          პაროლის მინიმალური სიგრძე უნდა შეადგენდეს 8 სიმბოლოს
          `)
       setPasswordError(true);
-      // setPasswordMatch(true);
     }
      else if (!confirmpassword) {
       toast.info("გაიმეორეთ პაროლი")
       setConfirmPasswordError(true);
+      setGenderError(false);
       setPhoneNumberError(false);
       setPasswordError(false);
       setPasswordMatch(false);
@@ -156,10 +167,12 @@ function App() {
       setEmailError(false);
       setCountryError(false);
       setGenderError(false);
+      setuserDateBirthError(false);
       confirmpasswordref.current.focus();
     } else if (password != confirmpassword) {
       toast.error("პაროლი არ ემთხვევა")
       setPasswordMatch(true);
+      setGenderError(false);
       setConfirmPasswordError(false);
       setPasswordError(false);
       setFirstNameError(false);
@@ -167,6 +180,7 @@ function App() {
       setEmailError(false);
       setCountryError(false);
       setGenderError(false);
+      setuserDateBirthError(false);
       }
       else {
       setConfirmPasswordError(false);
@@ -305,6 +319,27 @@ function App() {
                             : "form__control"
                         }
                       ></label>
+                    </div>
+
+                    <div class="form-group">
+                      <PhoneInput className="form control PhoneInput" style={{padding:"5px"}}
+                          value={phonenumber}
+                          ref={phoneref}
+                          className={
+                            phonenumbererror
+                              ? "form-control error__input__container"
+                              : "form-control" 
+                          }
+                          onChange={setPhoneNumber}
+                         />
+                          <label
+                            for=""
+                            className={
+                              phonenumbererror
+                                ? "form__control error__label__container"
+                                : "form__control"
+                            }
+                          ></label>
                     </div>
                     
                     
@@ -636,11 +671,11 @@ function App() {
                         <label class="radio inline" style={{padding: "10px"}}>
                           <input
                             type="radio"
-                            // className={
-                            //   gendererror
-                            //   ? "form-control error__input__container"
-                            //   : "form-control"
-                            // }
+                            className={
+                              gendererror
+                              ?  "radio inline error__radiobutton"
+                              : "radio inline" 
+                            }
                             name="gender"
                             value="მამრობითი"
                             onChange={(e) => {
@@ -652,6 +687,11 @@ function App() {
                         <label class="radio inline">
                           <input
                           type="radio"
+                          className={
+                            gendererror
+                            ?  "radio inline error__radiobutton"
+                            : "radio inline" 
+                          }
                           name="gender"
                           value="მდედრობითი"
                           onChange={(e) => {
@@ -666,46 +706,16 @@ function App() {
                   
                   
                   <div class="col-md-6">
-                    <div class="form-group container" style={{ padding: "0" }}>
-                        <PhoneInput className="form control PhoneInput" style={{padding:"5px"}}
-                          value={phonenumber}
-                          ref={phoneref}
-                          className={
-                            phonenumbererror
-                              ? "form-control error__input__container"
-                              : "form-control" 
-                          }
-                          onChange={setPhoneNumber}
-                         />
-                          <label
-                            for=""
-                            className={
-                              phonenumbererror
-                                ? "form__control error__label__container"
-                                : "form__control"
-                            }
-                          ></label>
-                    </div>
-                        <div class="form-group">
-                        <input
-                            name="day"
-                            size="1"
-                            type="date"
+                    
+                      <div class="form-group">
+                        <Calendar
                             value={userDateBirth}
                             className={
                               userDateBirthError
                                 ? "form-control error__input__container"
                                 : "form-control"
                             }
-                            onChange={(e) => {
-                              setUserDateBirth(e.target.value);
-                              if(userDateBirth.length < 0){
-                                setuserDateBirthError(true);
-                              }
-                              else{
-                                setuserDateBirthError(false);
-                              }
-                            }}
+                            onChange={setUserDateBirth}
                           />
                       <label
                         for=""
@@ -717,7 +727,6 @@ function App() {
                       ></label>
                       
                     </div>
-
                     <div class="form-group">
                       <input
                         type="password"
