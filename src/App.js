@@ -113,15 +113,16 @@ function App() {
       toast.error("ტელეფონის ნომერი შეიყვანეთ სრულად")
       setPhoneNumberError(true);
     }
-      else if(!country){
-      setPhoneNumberError(false)
-      toast.info("აირჩიეთ ქვეყანა")
-      setCountryError(true);
-    }
       else if(!gender){
         setPhoneNumberError(false)
         toast.info("მიუთითეთ სქესი")
         setGenderError(true)
+      }
+      else if(!country){
+        setPhoneNumberError(false)
+        setGenderError(false)
+        toast.info("აირჩიეთ ქვეყანა")
+        setCountryError(true);
       }
     else if(!userDateBirth){
       setPhoneNumberError(false)
@@ -257,7 +258,7 @@ function App() {
                        </div>
                     
                     
-                    <div class="form-group">
+                    <div class="form-group" style={{marginTop:"1.8rem"}}>
                       <input
                         type="text"
                         class="form-control"
@@ -289,7 +290,7 @@ function App() {
                       </div>
                     
                     
-                    <div class="form-group">
+                    <div class="form-group" style={{marginTop:"1.8rem"}}>
                       <input
                         type="email"
                         class="form-control"
@@ -321,7 +322,7 @@ function App() {
                       ></label>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style={{marginTop:"1.8rem"}}>
                       <PhoneInput className="form control PhoneInput" style={{padding:"5px"}}
                           value={phonenumber}
                           ref={phoneref}
@@ -341,9 +342,44 @@ function App() {
                             }
                           ></label>
                     </div>
-                    
-                    
                     <div class="form-group">
+                      <div class="maxl">
+                        <label class="radio inline" style={{padding: "10px"}}>
+                          <input
+                            type="radio"
+                            className={
+                              gendererror
+                              ?  "radio inline error__radiobutton"
+                              : "radio inline" 
+                            }
+                            name="gender"
+                            value="მამრობითი"
+                            onChange={(e) => {
+                              setGender(e.target.value);
+                            }} 
+                          />
+                          <span > მამრობითი </span>
+                        </label>
+                        <label class="radio inline">
+                          <input
+                          type="radio"
+                          className={
+                            gendererror
+                            ?  "radio inline error__radiobutton"
+                            : "radio inline" 
+                          }
+                          name="gender"
+                          value="მდედრობითი"
+                          onChange={(e) => {
+                            setGender(e.target.value);
+                          }} 
+                          />
+                          <span>  მდედრობითი </span>
+                        </label>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group" style={{marginTop:"1.75rem"}}>
                       <select class="form-control"
                         className={
                           countryerror
@@ -665,43 +701,6 @@ function App() {
                       </select>
                     </div>
                     
-                    
-                    <div class="form-group">
-                      <div class="maxl">
-                        <label class="radio inline" style={{padding: "10px"}}>
-                          <input
-                            type="radio"
-                            className={
-                              gendererror
-                              ?  "radio inline error__radiobutton"
-                              : "radio inline" 
-                            }
-                            name="gender"
-                            value="მამრობითი"
-                            onChange={(e) => {
-                              setGender(e.target.value);
-                            }} 
-                          />
-                          <span > მამრობითი </span>
-                        </label>
-                        <label class="radio inline">
-                          <input
-                          type="radio"
-                          className={
-                            gendererror
-                            ?  "radio inline error__radiobutton"
-                            : "radio inline" 
-                          }
-                          name="gender"
-                          value="მდედრობითი"
-                          onChange={(e) => {
-                            setGender(e.target.value);
-                          }} 
-                          />
-                          <span>  მდედრობითი </span>
-                        </label>
-                      </div>
-                    </div>
                   </div>
                   
                   
